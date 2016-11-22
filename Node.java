@@ -6,11 +6,18 @@ public class Node {
 	private int longitude;
 	private int altitude;
 	
-	public Node(int id, String n, int longitude, int altitude) {
+	/*public Node(int id, String n, int longitude, int altitude) {
 		this.id = id;
 		this.name = n;
 		this.longitude = longitude;
 		this.altitude = altitude;
+	}*/
+	
+	public Node(int id, String n) {
+		this.id = id;
+		this.name = n;
+		this.longitude = 0; //Suite aux modifications apportées par le chargé de lab durant la séance
+		this.altitude = 0;
 	}
 	
 	public int getId() {
@@ -39,7 +46,7 @@ public class Node {
 		this.longitude = longitude;
 	}
 
-	public int getLaltitude() {
+	public int getAltitude() {
 		return altitude;
 	}
 

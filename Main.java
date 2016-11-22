@@ -59,17 +59,16 @@ public class Main {
 		
 		g.setEdges(edges);
 		
-		
 		// Exerice 2: A completer : création du graphe
 		
 		Dijkstra d = new Dijkstra(g);
 		
-		d.findPath(/* SpÃ©cifiez les paramètres */);
+		d.findPath(nodeA, nodeG);
 		
 		d.afficherTable();
 
 		// Exercice 3
-		System.out.println(d.afficherCourtChemin(/* Spécifiez les paramètres */));
+		System.out.println(d.afficherCourtChemin(nodeA, nodeG));
 	
 	}
 }

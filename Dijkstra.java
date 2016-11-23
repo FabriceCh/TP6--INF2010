@@ -23,24 +23,29 @@ public class Dijkstra {
 		Edge edgeSS = new Edge(s,s,0);
 		
 		dijkstraTable[0].put(edgeSS.getDestination(), edgeSS);
-				
+			
 		Node selectedNode = s;
+		HashMap<Node,Edge> selectedNodes = new HashMap<Node,Edge>(); //Donne les noeuds choisis et leur valeur minimale pour se rendre
+		selectedNodes.put(s, edgeSS);
 		
 		for(int i = 1; i < graph.getNodes().size(); i++){
 			dijkstraTable[i] = new HashMap<Node, Edge>(dijkstraTable[i-1]);
 			dijkstraTable[i].remove(selectedNode);
 			
 			for(Edge e : graph.getEdgesConnected(selectedNode)){
-				Edge eCopie = new Edge(e.getSource(), e.getDestination(), e.getDistance()+ (dijkstraTable[i-1].get(selectedNode)).getDistance());
-				if(dijkstraTable[i].get(eCopie.getDestination()) != null){
-					if(eCopie.getDistance() < (dijkstraTable[i].get(eCopie.getDestination())).getDistance())
-						dijkstraTable[i].replace(eCopie.getDestination(), eCopie);
+				Edge eCopie = new Edge(e.getSource(), e.getDestination(), e.getDistance() + (dijkstraTable[i-1].get(selectedNode)).getDistance());
+				
+				//Si le noeud a deja ete choisi, ou que la nouvelle valeur est superieure a celle deja dans la table de dijkstra, on ne fait rien
+				if(selectedNodes.containsKey(eCopie.getDestination()) || 
+						(dijkstraTable[i].containsKey(eCopie.getDestination()) && (eCopie.getDistance() > dijkstraTable[i].get(eCopie.getDestination()).getDistance()))){
 				}
+				//sinon, on lajoute dans la table
 				else
 					dijkstraTable[i].put(eCopie.getDestination(), eCopie);
 			}
 			
 			selectedNode = getMinimum(dijkstraTable[i]);
+			selectedNodes.put(selectedNode, dijkstraTable[i].get(selectedNode));
 		}
 
 	}
@@ -55,13 +60,13 @@ public class Dijkstra {
 		return min.getDestination();
 	}
 
-	private Edge getMinimum (Edge e1, Edge e2) {
+	//private Edge getMinimum (Edge e1, Edge e2) {
 		// A completer
-	}
+	//}
 	
-	public String afficherCourtChemin (Node source, Node destination) {
+	//public String afficherCourtChemin (Node source, Node destination) {
 		// A completer
-	}
+	//}
 
 	public void afficherTable () {
 		// A completer

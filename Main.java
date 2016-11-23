@@ -68,7 +68,7 @@ public class Main {
 		d.afficherTable();
 
 		// Exercice 3
-		System.out.println(d.afficherCourtChemin(nodeA, nodeG));
+		//System.out.println(d.afficherCourtChemin(nodeA, nodeG));
 	
 	}
 }

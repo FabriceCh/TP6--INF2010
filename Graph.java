@@ -42,7 +42,11 @@ public class Graph {
 		ArrayList<Edge> edgesConnected = new ArrayList<Edge>();
 		
 		for(Edge e : edges){ 
-			if(e.getDestination() == node || e.getSource() == node){ //Si on trouve un match entre la destination de l'arc et le noeud en paramètre
+			if(e.getDestination() == node){ //Si on trouve un match entre la destination de l'arc et le noeud en paramètre
+				Edge arcInverse = new Edge(e.getDestination(), e.getSource(), e.getDistance());
+				edgesConnected.add(arcInverse);
+			}
+			else if (e.getSource() == node){
 				edgesConnected.add(e);
 			}
 		}

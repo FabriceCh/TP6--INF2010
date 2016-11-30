@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.Arrays;
 
 public class Dijkstra {
 
@@ -94,6 +95,22 @@ public class Dijkstra {
 	}
 
 	public void afficherTable () {
+		ArrayList<Node> nodes = new ArrayList<Node>(graph.getNodes());
+		String[][] table = new String[dijkstraTable.length][nodes.size()];
+		for (int i = 0; i < nodes.size(); i++){
+			table[0][i] = nodes.get(i).getName();
+		}
+		
+		for (int i = 0; i < dijkstraTable.length; i++){
+			for(int j = 0; j < nodes.size(); j++){
+				if (dijkstraTable[i].containsKey(nodes.get(j))){
+					table[i][j] = dijkstraTable[i].get(nodes.get(j)).getDistance() + dijkstraTable[i].get(nodes.get(j)).getSource().getName();
+				}
+				else
+					table[i][j] = " ";
+			}
+		}
+		System.out.println(Arrays.deepToString(table));
 		
 	}
 	

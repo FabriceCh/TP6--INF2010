@@ -18,20 +18,28 @@ public class Dijkstra {
 	@SuppressWarnings("unchecked")
 	public void findPath (Node s, Node d) {
 
+		//initialisation de la table
 		dijkstraTable = new HashMap[graph.getNodes().size()];
 		
+		//initialisation de la premiere ligne (premiere iteration)
 		dijkstraTable[0] = new HashMap<Node, Edge>();
-		
 		Edge edgeSS = new Edge(s,s,0);
-		
 		dijkstraTable[0].put(edgeSS.getDestination(), edgeSS);
-			
+
 		Node selectedNode = s;
 		ArrayList<Node> selectedNodes = new ArrayList<Node>(); //Donne les noeuds choisis
 		selectedNodes.add(selectedNode);
 		
+		//initialisation du stack pour se souvenir du parcours
 		path = new Stack<Edge>();
 		path.push(edgeSS);
+		
+		/*
+		 * A chaque iteration, on copie l'Hashmap de la precedente et on lui enleve le
+		 * noeud qui a ete choisi precedemment. Ensuite on ajoute tous les noeuds qui
+		 * sont reliés au noeud choisi, à condition qu'ils ne sont pas parmi l'array
+		 * SelectedNodes ou que leur chemin est plus long que le précédent.
+		 */
 		
 		int i = 1; //iterateur pour parcourir la dijkstraTable et sortir du while
 		while (selectedNode != d){
@@ -56,11 +64,7 @@ public class Dijkstra {
 			selectedNodes.add(selectedNode);
 			i++;
 		}
-		
-		
-		
-		
-		
+	
 	}
 
 	private Node getMinimum(Map<Node, Edge> map) {
@@ -77,10 +81,17 @@ public class Dijkstra {
 		// A completer
 	//}
 	
+	/*
+	 * La logique de cette méthode est expliquée dans l'énoncé. On dépile jusqu'à ce 
+	 * que la destination de l'arc sur la pile est la source du noeud actuel.
+	 */
+	
 	public String afficherCourtChemin(Node source, Node destination) {
 		this.findPath(source,destination);
 		StringBuilder chemin = new StringBuilder();
 		Edge lastEdge = path.pop();
+		int longeurDuChemin = lastEdge.getDistance();
+		
 		chemin.append(lastEdge.getDestination().getName() + " ");
 		while (!path.empty()){
 			if (!path.empty() && path.peek().getDestination() == lastEdge.getSource()){
@@ -91,69 +102,39 @@ public class Dijkstra {
 				path.pop();
 			}
 		}
-		return chemin.reverse().toString();
+		System.out.print("La longueur du plus court chemin est : ");
+		System.out.println(longeurDuChemin);
+		return "Le chemin le plus court est : " + chemin.reverse().toString();
+		
 	}
 
+	/*
+	 * On parcourt toutes les HashMap et on stock leur contenu dans un array double dont 
+	 * on connait la taille. On compare toujours la node dans le HashMap avec la node associée
+	 * à la colonne, si elle est égale, on ajoute l'arc et sa source dans le tableau, sinon
+	 * on ajoute une tabulation.
+	 */
+	
 	public void afficherTable () {
 		ArrayList<Node> nodes = new ArrayList<Node>(graph.getNodes());
 		String[][] table = new String[dijkstraTable.length][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++){
-			table[0][i] = nodes.get(i).getName();
+			table[0][i] = nodes.get(i).getName() + "\t";
 		}
-		
+		System.out.println(Arrays.deepToString(table[0]));
 		for (int i = 0; i < dijkstraTable.length; i++){
 			for(int j = 0; j < nodes.size(); j++){
 				if (dijkstraTable[i].containsKey(nodes.get(j))){
-					table[i][j] = dijkstraTable[i].get(nodes.get(j)).getDistance() + dijkstraTable[i].get(nodes.get(j)).getSource().getName();
+					table[i][j] = dijkstraTable[i].get(nodes.get(j)).getDistance() + dijkstraTable[i].get(nodes.get(j)).getSource().getName() + "\t";
 				}
 				else
-					table[i][j] = " ";
+					table[i][j] = "\t";
 			}
 		}
-		System.out.println(Arrays.deepToString(table));
+		for (int i = 0; i < dijkstraTable.length; i++)
+			System.out.println(Arrays.deepToString(table[i]));
 		
 	}
 	
 	
 }
-
-/*
-public void findPath (Node s, Node d) {
-
-dijkstraTable = new HashMap[graph.getNodes().size()];
-
-dijkstraTable[0] = new HashMap<Node, Edge>();
-
-Stack<Node> path = new Stack<Node>();
-
-Edge edgeSS = new Edge(s,s,0);
-
-dijkstraTable[0].put(edgeSS.getDestination(), edgeSS);
-	
-Node selectedNode = s;
-HashMap<Node,Edge> selectedNodes = new HashMap<Node,Edge>(); //Donne les noeuds choisis et leur valeur minimale pour se rendre
-selectedNodes.put(s, edgeSS);
-
-for(int i = 1; i < graph.getNodes().size(); i++){
-	dijkstraTable[i] = new HashMap<Node, Edge>(dijkstraTable[i-1]);
-	dijkstraTable[i].remove(selectedNode);
-	
-	for(Edge e : graph.getEdgesConnected(selectedNode)){
-		Edge eCopie = new Edge(e.getSource(), e.getDestination(), e.getDistance() + (dijkstraTable[i-1].get(selectedNode)).getDistance());
-		
-		//Si le noeud a deja ete choisi, ou que la nouvelle valeur est superieure a celle deja dans la table de dijkstra, on ne fait rien
-		if(selectedNodes.containsKey(eCopie.getDestination()) || 
-				(dijkstraTable[i].containsKey(eCopie.getDestination()) && (eCopie.getDistance() > dijkstraTable[i].get(eCopie.getDestination()).getDistance()))){
-		}
-		//sinon, on lajoute dans la table
-		else
-			dijkstraTable[i].put(eCopie.getSource(), eCopie);
-	}
-	
-	selectedNode = getMinimum(dijkstraTable[i]);
-	path.push(selectedNode);
-	selectedNodes.put(selectedNode, dijkstraTable[i].get(selectedNode));
-}
-
-}
-*/

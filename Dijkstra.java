@@ -26,13 +26,13 @@ public class Dijkstra {
 		dijkstraTable[0].put(edgeSS.getDestination(), edgeSS);
 			
 		Node selectedNode = s;
-		ArrayList<Node> selectedNodes = new ArrayList<Node>(); //Donne les noeuds choisis et leur valeur minimale pour se rendre
+		ArrayList<Node> selectedNodes = new ArrayList<Node>(); //Donne les noeuds choisis
 		selectedNodes.add(selectedNode);
 		
 		path = new Stack<Edge>();
 		path.push(edgeSS);
 		
-		int i = 1;
+		int i = 1; //iterateur pour parcourir la dijkstraTable et sortir du while
 		while (selectedNode != d){
 			dijkstraTable[i] = new HashMap<Node, Edge>(dijkstraTable[i-1]);
 			dijkstraTable[i].remove(selectedNode);
@@ -50,15 +50,16 @@ public class Dijkstra {
 			}
 			
 			selectedNode = getMinimum(dijkstraTable[i]);
-			/*while(!path.empty() && path.peek() != dijkstraTable[i].get(selectedNode) ){
-				path.pop();
-			}*/
 			
 			path.push(dijkstraTable[i].get(selectedNode));
 			selectedNodes.add(selectedNode);
 			i++;
 		}
-
+		
+		
+		
+		
+		
 	}
 
 	private Node getMinimum(Map<Node, Edge> map) {
@@ -75,13 +76,9 @@ public class Dijkstra {
 		// A completer
 	//}
 	
-	//public String afficherCourtChemin (Node source, Node destination) {
-		// A completer
-	//}
-
-	public void afficherTable () {
+	public String afficherCourtChemin(Node source, Node destination) {
+		this.findPath(source,destination);
 		StringBuilder chemin = new StringBuilder();
-		System.out.print("Chemin le plus court : ");
 		Edge lastEdge = path.pop();
 		chemin.append(lastEdge.getDestination().getName() + " ");
 		while (!path.empty()){
@@ -93,8 +90,14 @@ public class Dijkstra {
 				path.pop();
 			}
 		}
-		System.out.print(chemin.reverse().toString());
+		return chemin.reverse().toString();
 	}
+
+	public void afficherTable () {
+		
+	}
+	
+	
 }
 
 /*
